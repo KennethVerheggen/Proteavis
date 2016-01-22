@@ -603,6 +603,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         checkBox.setEnabled(!clustal);
         gradeColumn.setCellEditor(new DefaultCellEditor(checkBox));
         DefaultTableModel model = (DefaultTableModel) allignmentTable.getModel();
+        model.setRowCount(0);
         for (String aProtein : proteinSequenceMap.keySet()) {
             if (!aProtein.equalsIgnoreCase("CONSENSUS")) {
                 model.addRow(new Object[]{aProtein, Instrument.ACCORDION, clustal});
