@@ -723,6 +723,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
 
     private void resetGamePanel() {
         gamePanel.reset();
+        soundProgressBar.setValue(0);
         soundProgressBar.setString("");
     }
 

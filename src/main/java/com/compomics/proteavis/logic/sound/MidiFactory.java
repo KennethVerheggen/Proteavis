@@ -17,15 +17,11 @@ import jm.util.Write;
 public class MidiFactory {
 
     public static void createMusicScore(Collection<ProteinMusicScore> proteinMusicScores, MusicScoreGenerator musicScoreGenerator) throws IOException, MidiUnavailableException, InvalidMidiDataException {
-        ProteinMusicScore masterScore = new ProteinMusicScore("Master", "");
+        //  ProteinMusicScore masterScore = new ProteinMusicScore("Master", "",);
         for (ProteinMusicScore aScore : proteinMusicScores) {
-            for (AminoAcidResult aResult : aScore) {
-                masterScore.add(aResult);
-                masterScore.setSequence(masterScore.getSequence() + aResult.getCharacter());
-            }
-            masterScore.setSequence(masterScore.getSequence() + "!!!!!");
+            musicScoreGenerator.compose(aScore);
         }
-        musicScoreGenerator.compose(masterScore);
+
     }
 
     public static void save(Score score, File midiFile) throws FileNotFoundException, IOException {

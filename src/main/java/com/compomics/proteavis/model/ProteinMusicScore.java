@@ -26,8 +26,7 @@ public class ProteinMusicScore extends LinkedList<AminoAcidResult> {
      */
     private final Instrument peptideInstrument;
 
-    
-        public ProteinMusicScore(String accession, String sequence) {
+    public ProteinMusicScore(String accession, String sequence) {
         this.accession = accession;
         this.sequence = sequence;
         this.proteinInstrument = Instrument.ACCORDION;
@@ -37,7 +36,6 @@ public class ProteinMusicScore extends LinkedList<AminoAcidResult> {
         }
     }
 
-    
     public ProteinMusicScore(String accession, String sequence, Instrument proteinInstrument, Instrument peptideInstrument) {
         this.accession = accession;
         this.sequence = sequence;

@@ -75,7 +75,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.compomics.proteomusic.view.impl.ExplosionVisualiser</mainClass>
+                            <mainClass>com.compomics.proteavis.view.impl.ExplosionVisualiser</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
