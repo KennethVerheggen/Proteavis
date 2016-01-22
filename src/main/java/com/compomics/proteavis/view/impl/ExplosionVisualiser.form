@@ -43,7 +43,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="customImport">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Import Custom Sequence..."/>
-                <Property name="toolTipText" type="java.lang.String" value="Imports Clustal Omega results"/>
+                <Property name="toolTipText" type="java.lang.String" value="Imports a custom sequence"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="customImportActionPerformed"/>
@@ -79,7 +79,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="rbRandomLoc">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Random explosion locations"/>
                 <Property name="toolTipText" type="java.lang.String" value="Randomize the location of explosions"/>
               </Properties>
@@ -89,7 +88,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="rbRandomColor">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Random explosion colors"/>
                 <Property name="toolTipText" type="java.lang.String" value="Randomize the explosion color"/>
               </Properties>

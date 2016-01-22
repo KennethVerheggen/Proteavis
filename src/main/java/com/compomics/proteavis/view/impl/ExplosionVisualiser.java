@@ -412,7 +412,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         jMenu1.add(jSeparator1);
 
         customImport.setText("Import Custom Sequence...");
-        customImport.setToolTipText("Imports Clustal Omega results");
+        customImport.setToolTipText("Imports a custom sequence");
         customImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 customImportActionPerformed(evt);
@@ -443,7 +443,6 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
 
         jMenu2.setText("Options");
 
-        rbRandomLoc.setSelected(true);
         rbRandomLoc.setText("Random explosion locations");
         rbRandomLoc.setToolTipText("Randomize the location of explosions");
         rbRandomLoc.addActionListener(new java.awt.event.ActionListener() {
@@ -453,7 +452,6 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         });
         jMenu2.add(rbRandomLoc);
 
-        rbRandomColor.setSelected(true);
         rbRandomColor.setText("Random explosion colors");
         rbRandomColor.setToolTipText("Randomize the explosion color");
         rbRandomColor.addActionListener(new java.awt.event.ActionListener() {
