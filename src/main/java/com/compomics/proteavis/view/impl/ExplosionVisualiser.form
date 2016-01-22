@@ -9,8 +9,6 @@
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fastaMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Import FASTA..."/>
@@ -42,6 +40,17 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="customImport">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Import Custom Sequence..."/>
+                <Property name="toolTipText" type="java.lang.String" value="Imports Clustal Omega results"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="customImportActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Export Sound to MIDI..."/>
@@ -72,6 +81,7 @@
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Random explosion locations"/>
+                <Property name="toolTipText" type="java.lang.String" value="Randomize the location of explosions"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbRandomLocActionPerformed"/>
@@ -81,6 +91,7 @@
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Random explosion colors"/>
+                <Property name="toolTipText" type="java.lang.String" value="Randomize the explosion color"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbRandomColorActionPerformed"/>
@@ -91,17 +102,53 @@
             <MenuItem class="javax.swing.JMenuItem" name="miSetPepInstrument">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Set peptide instrument"/>
+                <Property name="toolTipText" type="java.lang.String" value="Set the instrument used to play peptide highlights (if applicable)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miSetPepInstrumentActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="miSetAminoAcidGrouping">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Set amino acid grouping"/>
+                <Property name="toolTipText" type="java.lang.String" value="Set the strategy to group amino acids on property. This will determine the coloring scheme"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miSetAminoAcidGroupingActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="miExamples">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Examples"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miPlayExample">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Insulin (human)"/>
+                <Property name="toolTipText" type="java.lang.String" value="Play an example sequence"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miPlayExampleActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miPlayTNF">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="P53 (human)"/>
+                <Property name="toolTipText" type="java.lang.String" value="Play an example sequence"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miPlayTNFActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miPlayBActin">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="B-Actin"/>
+                <Property name="toolTipText" type="java.lang.String" value="Play an example sequence"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miPlayBActinActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -197,7 +244,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLayeredPane1" max="32767" attributes="0"/>
-                          <Component id="jScrollPane1" pref="476" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="522" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -205,7 +252,7 @@
                           <Component id="playButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="stopButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

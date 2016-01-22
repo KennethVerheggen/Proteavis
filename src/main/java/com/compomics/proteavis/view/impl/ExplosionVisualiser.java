@@ -11,12 +11,12 @@ import com.compomics.proteavis.logic.sound.MidiFactory;
 import com.compomics.proteavis.logic.sound.impl.CombinedMusicGenerator;
 import com.compomics.proteavis.model.AminoAcidResult;
 import com.compomics.proteavis.model.ProteinMusicScore;
-import com.compomics.proteavis.model.SoundAlphabet;
 import com.compomics.proteavis.model.SoundAlphabet.SoundAlphabetType;
 import com.compomics.proteavis.model.enums.Instrument;
 import com.compomics.proteavis.view.Visualiser;
 import com.compomics.proteavis.view.game.panels.impl.ZenVisualisationPanel;
 import com.compomics.proteavis.view.model.VisualisationTableModel;
+import com.compomics.proteavis.view.panel.CustomSequenceDialog;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -24,11 +24,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -227,12 +224,13 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         fireworksPanel = new com.compomics.proteavis.view.game.panels.FireworksPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         fastaMenuItem = new javax.swing.JMenuItem();
         evidenceMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         clustalMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        customImport = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         saveMenu = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -241,7 +239,11 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         rbRandomColor = new javax.swing.JRadioButtonMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         miSetPepInstrument = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miSetAminoAcidGrouping = new javax.swing.JMenuItem();
+        miExamples = new javax.swing.JMenu();
+        miPlayExample = new javax.swing.JMenuItem();
+        miPlayTNF = new javax.swing.JMenuItem();
+        miPlayBActin = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Proteavis - Protein AudioVisual Symphony");
@@ -358,13 +360,13 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
                 .addContainerGap()
                 .addGroup(singleValuesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLayeredPane1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(singleValuesJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(soundProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(playButton)
                     .addComponent(stopButton))
-                .addGap(54, 54, 54))
+                .addGap(8, 8, 8))
         );
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
@@ -379,7 +381,6 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         );
 
         jMenu1.setText("File");
-        jMenu1.add(jSeparator3);
 
         fastaMenuItem.setText("Import FASTA...");
         fastaMenuItem.setToolTipText("Import a FASTA file containing protein sequences");
@@ -410,6 +411,16 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         jMenu1.add(clustalMenuItem);
         jMenu1.add(jSeparator1);
 
+        customImport.setText("Import Custom Sequence...");
+        customImport.setToolTipText("Imports Clustal Omega results");
+        customImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customImportActionPerformed(evt);
+            }
+        });
+        jMenu1.add(customImport);
+        jMenu1.add(jSeparator3);
+
         saveMenu.setText("Export Sound to MIDI...");
         saveMenu.setToolTipText("Exports the currently selected proteins to a MIDI file");
         saveMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -434,6 +445,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
 
         rbRandomLoc.setSelected(true);
         rbRandomLoc.setText("Random explosion locations");
+        rbRandomLoc.setToolTipText("Randomize the location of explosions");
         rbRandomLoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbRandomLocActionPerformed(evt);
@@ -443,6 +455,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
 
         rbRandomColor.setSelected(true);
         rbRandomColor.setText("Random explosion colors");
+        rbRandomColor.setToolTipText("Randomize the explosion color");
         rbRandomColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbRandomColorActionPerformed(evt);
@@ -452,6 +465,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         jMenu2.add(jSeparator5);
 
         miSetPepInstrument.setText("Set peptide instrument");
+        miSetPepInstrument.setToolTipText("Set the instrument used to play peptide highlights (if applicable)");
         miSetPepInstrument.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miSetPepInstrumentActionPerformed(evt);
@@ -459,15 +473,47 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         });
         jMenu2.add(miSetPepInstrument);
 
-        jMenuItem1.setText("Set amino acid grouping");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miSetAminoAcidGrouping.setText("Set amino acid grouping");
+        miSetAminoAcidGrouping.setToolTipText("Set the strategy to group amino acids on property. This will determine the coloring scheme");
+        miSetAminoAcidGrouping.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miSetAminoAcidGroupingActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(miSetAminoAcidGrouping);
 
         jMenuBar1.add(jMenu2);
+
+        miExamples.setText("Examples");
+
+        miPlayExample.setText("Insulin (human)");
+        miPlayExample.setToolTipText("Play an example sequence");
+        miPlayExample.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPlayExampleActionPerformed(evt);
+            }
+        });
+        miExamples.add(miPlayExample);
+
+        miPlayTNF.setText("P53 (human)");
+        miPlayTNF.setToolTipText("Play an example sequence");
+        miPlayTNF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPlayTNFActionPerformed(evt);
+            }
+        });
+        miExamples.add(miPlayTNF);
+
+        miPlayBActin.setText("B-Actin");
+        miPlayBActin.setToolTipText("Play an example sequence");
+        miPlayBActin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miPlayBActinActionPerformed(evt);
+            }
+        });
+        miExamples.add(miPlayBActin);
+
+        jMenuBar1.add(miExamples);
 
         setJMenuBar(jMenuBar1);
 
@@ -587,9 +633,8 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
     /**
      * prepares the visual content for the sequence panel
      */
-    private void prepareVisuals() {
+    private void prepareVisuals(HashMap<String, Instrument> proteins) {
         proteinMusicScores = new ArrayList<>();
-        HashMap<String, Instrument> proteins = getProteinSelection();
         HashMap<String, HashMap<String, Double>> highlightedPeptideMap = ProteinHighlightImport.getHighlightedPeptideMap();
 
         double minValue = Double.MAX_VALUE;
@@ -639,12 +684,12 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         }
     }
 
-    public void play() {
-        if (!getProteinSelection().isEmpty()) {
+    public void play(HashMap<String, Instrument> proteinSelection) {
+        if (!proteinSelection.isEmpty()) {
             if (!play) {
                 playButton.setText("PAUSE");
                 if (!initialized) {
-                    prepareVisuals();
+                    prepareVisuals(proteinSelection);
                     try {
                         initializeMidi();
                     } catch (MidiUnavailableException ex) {
@@ -662,7 +707,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
     }
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        play();
+        play(getProteinSelection());
     }//GEN-LAST:event_playButtonActionPerformed
 
     /**
@@ -680,6 +725,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
 
     private void resetGamePanel() {
         gamePanel.reset();
+        soundProgressBar.setString("");
     }
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
@@ -701,7 +747,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
                             switch (result) {
                                 case JOptionPane.YES_OPTION: {
                                     try {
-                                        prepareVisuals();
+                                        prepareVisuals(getProteinSelection());
                                         initializeMidi();
                                         MidiFactory.save(score, f);
                                     } catch (IOException | MidiUnavailableException ex) {
@@ -719,7 +765,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
                             }
                         } else {
                             try {
-                                prepareVisuals();
+                                prepareVisuals(getProteinSelection());
                                 initializeMidi();
                                 MidiFactory.save(score, f);
                                 return;
@@ -807,7 +853,7 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         }
     }//GEN-LAST:event_miSetPepInstrumentActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void miSetAminoAcidGroupingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSetAminoAcidGroupingActionPerformed
         Object[] possibilities = SoundAlphabetType.values();
         SoundAlphabetType tempType = (SoundAlphabetType) JOptionPane.showInputDialog(
                 this,
@@ -821,13 +867,67 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
         if ((tempType != null)) {
             alphabetType = tempType;
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_miSetAminoAcidGroupingActionPerformed
+
+    private void miPlayExampleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPlayExampleActionPerformed
+        proteinSequenceMap = new TreeMap<>();
+        proteinSequenceMap.put("example_insulin", "MALWMRLLPLLALLALWGPDPAAAFVNQH"
+                + "LCGSHLVEALYLVCGERGFFYTPKTRREAEDLQGSLQPLALEGSLQKRGIVEQCCTSICSL"
+                + "YQLENYCN");
+        HashMap<String, Instrument> proteinSelection = new HashMap<>();
+        proteinSelection.put("example_insulin", Instrument.BAGPIPES);
+        play(proteinSelection);
+    }//GEN-LAST:event_miPlayExampleActionPerformed
+
+    private void miPlayTNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPlayTNFActionPerformed
+        proteinSequenceMap = new TreeMap<>();
+        proteinSequenceMap.put("example_insulin",
+                "MEEPQSDPSVEPPLSQETFSDLWKLLPENNVLSPLPSQAMDDLMLSPDDIEQWFTEDPGP"
+                + "DEAPRMPEAAPPVAPAPAAPTPAAPAPAPSWPLSSSVPSQKTYQGSYGFRLGFLHSGTAK"
+                + "SVTCTYSPALNKMFCQLAKTCPVQLWVDSTPPPGTRVRAMAIYKQSQHMTEVVRRCPHHE"
+                + "RCSDSDGLAPPQHLIRVEGNLRVEYLDDRNTFRHSVVVPYEPPEVGSDCTTIHYNYMCNS"
+                + "SCMGGMNRRPILTIITLEDSSGNLLGRNSFEVRVCACPGRDRRTEEENLRKKGEPHHELP"
+                + "PGSTKRALPNNTSSSPQPKKKPLDGEYFTLQIRGRERFEMFRELNEALELKDAQAGKEPG"
+                + "GSRAHSSHLKSKKGQSTSRHKKLMFKTEGPDSD");
+        HashMap<String, Instrument> proteinSelection = new HashMap<>();
+        proteinSelection.put("example_insulin", Instrument.BAGPIPES);
+        play(proteinSelection);
+    }//GEN-LAST:event_miPlayTNFActionPerformed
+
+    private void miPlayBActinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miPlayBActinActionPerformed
+        proteinSequenceMap = new TreeMap<>();
+        proteinSequenceMap.put("example_insulin",
+                "MDDDIAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDSYVGDEAQS"
+                + "KRGILTLKYPIEHGIVTNWDDMEKIWHHTFYNELRVAPEEHPVLLTEAPLNPKANREKMT"
+                + "QIMFETFNTPAMYVAIQAVLSLYASGRTTGIVMDSGDGVTHTVPIYEGYALPHAILRLDL"
+                + "AGRDLTDYLMKILTERGYSFTTTAEREIVRDIKEKLCYVALDFEQEMATAASSSSLEKSY"
+                + "ELPDGQVITIGNERFRCPEALFQPSFLGMESCGIHETTFNSIMKCDVDIRKDLYANTVLS"
+                + "GGTTMYPGIADRMQKEITALAPSTMKIKIIAPPERKYSVWIGGSILASLSTFQQMWISKQ"
+                + "EYDESGPSIVHRKCF");
+        HashMap<String, Instrument> proteinSelection = new HashMap<>();
+        proteinSelection.put("example_insulin", Instrument.BAGPIPES);
+        play(proteinSelection);
+    }//GEN-LAST:event_miPlayBActinActionPerformed
+
+    private void customImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customImportActionPerformed
+        CustomSequenceDialog customSequenceDialog = new CustomSequenceDialog(this, true);
+        customSequenceDialog.setLocationRelativeTo(this);
+        customSequenceDialog.setVisible(true);
+        if (!customSequenceDialog.isCancelled()) {
+            if (proteinSequenceMap == null) {
+                proteinSequenceMap = new TreeMap<>();
+            }
+            proteinSequenceMap.put(customSequenceDialog.getAccession(), customSequenceDialog.getSequence());
+            updateProteinMap(false);
+        }
+    }//GEN-LAST:event_customImportActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable allignmentTable;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JMenuItem clustalMenuItem;
+    private javax.swing.JMenuItem customImport;
     private javax.swing.JMenuItem evidenceMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem fastaMenuItem;
@@ -837,13 +937,17 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JMenu miExamples;
+    private javax.swing.JMenuItem miPlayBActin;
+    private javax.swing.JMenuItem miPlayExample;
+    private javax.swing.JMenuItem miPlayTNF;
+    private javax.swing.JMenuItem miSetAminoAcidGrouping;
     private javax.swing.JMenuItem miSetPepInstrument;
     private javax.swing.JButton playButton;
     private javax.swing.JRadioButtonMenuItem rbRandomColor;

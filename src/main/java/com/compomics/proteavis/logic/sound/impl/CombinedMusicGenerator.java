@@ -130,7 +130,7 @@ public final class CombinedMusicGenerator extends MusicScoreGenerator {
             addAminoAcid(aminoAcidResult);
         }
         //compomics gimmick
-        addOuttro();
+       // addOuttro();
         addNote(new Note(REST, 33), new AminoAcidResult('!', 0.0));
         protein_instrument_part.addPhrase((background_phrase));
         peptide_instrument_part.addPhrase((foreground_phrase));
@@ -270,7 +270,7 @@ public final class CombinedMusicGenerator extends MusicScoreGenerator {
     }
 
     /**
-     * Makes a phrase fluent by replacing duplicate notes with an elongated one
+     * add a signature outro
      *
      * @param input the input phrase
      * @return the fluent phrase

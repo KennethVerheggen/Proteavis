@@ -16,7 +16,7 @@ public class ProteinSequencer implements AutoCloseable {
 
     private final Sequencer sequencer;
     private long microsecondPosition;
-
+    
     public ProteinSequencer() throws MidiUnavailableException {
         sequencer = MidiSystem.getSequencer();
         sequencer.open();
