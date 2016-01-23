@@ -18,6 +18,7 @@ import com.compomics.proteavis.view.game.panels.impl.ZenVisualisationPanel;
 import com.compomics.proteavis.view.model.VisualisationTableModel;
 import com.compomics.proteavis.view.panel.CustomSequenceDialog;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -185,9 +186,28 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
      */
     private void setAdditionalGuiProperties() {
         tableScrollPane.getViewport().setOpaque(false);
+
+// locate the dialog in the middle of the screen
         setLocationRelativeTo(null);
-        // locate the dialog in the middle of the screen
-        setLocationRelativeTo(null);
+    }
+
+    /**
+     * Trims the progress bar to look nicer
+     */
+    private void trimProgressBar(String text) {
+        StringBuilder textBuilder = new StringBuilder(text);
+        FontMetrics metrics = soundProgressBar.getGraphics().getFontMetrics();
+        int stringWidth = metrics.stringWidth(text);
+        int barWidth = soundProgressBar.getWidth();
+        if (stringWidth < barWidth) {
+            while (stringWidth < barWidth) {
+                textBuilder.append(" ");
+                stringWidth = metrics.stringWidth(textBuilder.toString());
+            }
+            soundProgressBar.setString(textBuilder.toString());
+        } else {
+            soundProgressBar.setString(textBuilder.substring(1));
+        }
     }
 
     /**
@@ -1015,21 +1035,14 @@ public class ExplosionVisualiser extends javax.swing.JFrame implements Visualise
     public void setSoundBarValue(long tick, char aminoAcid) {
         int value = (int) (100 * ((double) tick / (double) maxValue));
         soundProgressBar.setValue(value);
-        String progressBarText = soundProgressBar.getString();
+        String progressBarText = soundProgressBar.getString().trim();
         if (progressBarText == null) {
             progressBarText = "";
         }
-        if (progressBarText.length() > 100) {
-            //remove the first, add to the end
-            progressBarText = progressBarText.substring(1);
-        }
         if (aminoAcid != '!') {
             progressBarText += aminoAcid;
-        } else {
-            progressBarText += " ";
-        }
-        soundProgressBar.setString(progressBarText);
-        //    soundProgressBar.repaint();
+        } 
+        trimProgressBar(progressBarText);
     }
 
     @Override
